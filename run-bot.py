@@ -123,8 +123,14 @@ def recognise_question_from_speech():
     
     return result
 
+from PyQt5.QtWidgets import QApplication, QLabel
 
 def main():
+    # run GUI until user quits programme
+    # create GUI
+    app = QApplication([])
+    label = QLabel('Hello World!')
+    label.show()
     # if user says 'goodbye', quit programme
     audience_question = recognise_question_from_speech()
     while audience_question != 'end':
