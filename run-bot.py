@@ -123,22 +123,14 @@ def recognise_question_from_speech():
     
     return result
 
-from PyQt5.QtWidgets import QApplication, QLabel
-
 def main():
-    # run GUI until user quits programme
-    # create GUI
-    app = QApplication([])
-    label = QLabel('Hello World!')
-    label.show()
-    # if user says 'goodbye', quit programme
+
+    # if user says goodbye, quit programme
     audience_question = recognise_question_from_speech()
     while audience_question != 'end':
         # otherwise listen for questions and respond on loop
         response = choose_response(audience_question)
-
         print(response)
-
         # read out response (text to speech)
         language = 'en'
         audio = gTTS(text=response, lang=language, slow=False)
@@ -147,6 +139,6 @@ def main():
         # play audio
         playsound.playsound("/Users/rachel/Documents/Malfunctioning-Perfectly/malfunctioning-perfectly-live-bot/response.mp3", True)
         audience_question = recognise_question_from_speech()
-
+    
 if __name__== "__main__":
     main()
