@@ -1,33 +1,36 @@
 {% extends "dy0.html" %}
 {% block body %}
 <script type="text/javascript">
-var intervalID = setInterval(update_values,1000);
+  // var intervalID = setTimeout(update_values, 10000);
+
+  function text_to_speech(botResponse) {
+    console.log('text-to-speech');
+    $.post($SCRIPT_ROOT + '/_text_to_speech', { bot_response: botResponse }, function() {
+      // call listening function again when response speech has finished
+      update_values();
+    })
+  }
 
   function update_values() {
-        $.getJSON($SCRIPT_ROOT + '/_stuff',
-               
-      function(data) {
+    $.getJSON($SCRIPT_ROOT + '/_stuff',
+
+      function (data) {
         $('#result').text(data.result);
-        console.log(data)
-      });
-      
-    };
-   
-    
-    
-    function stopTextColor() {
-      clearInterval(intervalID);
-    }
-    
-</script>
-<body onload="update_values();">
-<h1>Dynamic Update</h1>
-<p>
-    <span id="result">?</span>
-<script>
-document.getElementById("result").innerHTML;
+        $('#bot-response').text(data.botResponse);
+        setTimeout(text_to_speech(data.botResponse), 1000)
+      },
+    );
+  };
+
 </script>
 
-	<button onclick="stopTextColor();">Stop</button>
-	</body>
+<body onload="update_values();">
+  <span id="result"></span>
+  <br />
+  <span id="bot-response"></span>
+  <script>
+    document.getElementById("result").innerHTML;
+    document.getElementById("bot-response").innerHTML;
+  </script>
+</body>
 {% endblock %}
