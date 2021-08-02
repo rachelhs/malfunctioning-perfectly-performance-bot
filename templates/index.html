@@ -1,11 +1,13 @@
 {% extends "dy0.html" %}
 {% block body %}
+<link rel="stylesheet" type="text/css" href="{{ url_for('static',filename='styles/main.css') }}">
+
 <script type="text/javascript">
   // var intervalID = setTimeout(update_values, 10000);
 
-  function text_to_speech(botResponse) {
+  text_to_speech = (botResponse) => {
     console.log('text-to-speech');
-    $.post($SCRIPT_ROOT + '/_text_to_speech', { bot_response: botResponse }, function() {
+    $.post($SCRIPT_ROOT + '/_text_to_speech', { bot_response: botResponse }, () => {
       // call listening function again when response speech has finished
       update_values();
     })
@@ -13,21 +15,25 @@
 
   function update_values() {
     $.getJSON($SCRIPT_ROOT + '/_stuff',
-
-      function (data) {
+      (data) => {
         $('#result').text(data.result);
         $('#bot-response').text(data.botResponse);
         setTimeout(text_to_speech(data.botResponse), 1000)
-      },
+      }
     );
   };
 
 </script>
 
 <body onload="update_values();">
-  <span id="result"></span>
-  <br />
-  <span id="bot-response"></span>
+  <div class="body-container">
+  <div class="audeince-text-container">
+    <span class="audience-text" id="result"></span>
+  </div>
+  <div class="bot-text-container">
+    <span class="bot-text" id="bot-response"></span>
+  </div>
+</div>
   <script>
     document.getElementById("result").innerHTML;
     document.getElementById("bot-response").innerHTML;
