@@ -65,7 +65,7 @@ def recognise_question_from_speech():
         #timeout is how long it will listen for if nothing is detected (None means no limit)
         print('listening')
         timeout = None
-        phrase_time_limit = 5
+        phrase_time_limit = None
         audio = r.listen(source, timeout, phrase_time_limit)
         print('processing')
 
@@ -134,6 +134,9 @@ def choose_response(question):
 @app.route('/_text_to_speech', methods = ['GET', 'POST'])
 def text_to_speech():
     bot_response = request.form.get('bot_response')
+    # fallback response in case gtp-3 generates blank text
+    if (len(bot_response) < 5):
+        bot_response = "some sort of don't know response"
     language = 'en'
     audio = gTTS(text=bot_response, lang=language, slow=False)
     # save audio
